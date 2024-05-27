@@ -1,0 +1,360 @@
+
+    \thispagestyle{empty}
+    \renewcommand{\chapterheadstartvskip}{
+    	\thispagestyle{plain}
+    	\vspace*{-70pt}
+    }
+    \chapter[GTDrift: A resource for exploring the interplay between genetic drift, genomic and transcriptomic characteristics in eukaryotes]{GTDrift: A resource for exploring the interplay between genetic drift, genomic and transcriptomic characteristics in eukaryotes}
+    \label{chap:chap5-GTDrift}
+    
+    \vspace*{20pt}
+    
+    The first objective of my thesis was to gather extensive genomic and transcriptomic data encompassing numerous metazoans and assess the extent of variability in random genetic drift among these species. To achieve this goal, we created and submitted for publication GTDrift, a comprehensive data resource that enables explorations of genomic and transcriptomic characteristics alongside proxies of the intensity of genetic drift in individual species. This resource encompasses data for 1,506 eukaryotic species, including 1,413 animals and 93 green plants, and is organized in three components. \\
+    
+    The first two components contain approximations of the effective population size, which serve as indicators of the extent of random genetic drift within each species.
+    In the first component, we meticulously investigated public databases to assemble data on life history traits such as longevity, adult body length and body mass for a set of 969 species. The second component includes estimations of the ratio between the rate of non-synonymous substitutions and the rate of synonymous substitutions (${dN}/{dS}$) in protein-coding sequences for 1,324 species. This ratio provides an estimate of the efficiency of natural selection in purging deleterious substitutions. 
+    The third component encompasses various genomic and transcriptomic characteristics. With this component, we aim to facilitate comparative transcriptomics analyses across species, by providing easy-to-use processed data for more than 16,000 \acrshort{RNA}-seq samples across 491 species.
+    These data include intron-centered alternative splicing frequencies, gene expression levels and sequencing depth statistics for each species, obtained with a homogeneous analysis protocol.  \\
+    
+    To enable cross-species comparisons, we provide orthology predictions for conserved single-copy genes based on \acrshort{BUSCO} gene sets.
+    To illustrate the possible uses of this database, we identify the most frequently used introns for each gene and we assess how the sequencing depth available for each species affects our power to identify major and minor splice variants.
+
+    \newpage
+    
+    \vspace*{10pt}
+    
+    \begin{center}
+    \Large{\textbf{GTDrift: A resource for exploring the interplay between genetic drift, genomic and transcriptomic characteristics in eukaryotes}} \\
+    \end{center}
+    
+    \begin{flushleft}
+    \oneline{\large \textbf{{Florian Bénitière$^{1,2}$ \orcidlink{0000-0001-7773-3542}}, {Laurent Duret$^{1}$ \orcidlink{0000-0003-2836-3463}}, {Anamaria Necsulea$^{1}$ \orcidlink{0000-0001-9861-7698}}}}
+    
+    \small
+    \begin{center}
+    $^{1}$Laboratoire de Biométrie et Biologie Évolutive, UMR CNRS 5558, Université Claude Bernard Lyon 1, France\\
+    $^{2}$Laboratoire d'Ecologie des Hydrosystèmes Naturels et Anthropisés, UMR CNRS 5023, Université Claude Bernard Lyon 1, France\\
+    \end{center}
+    \end{flushleft}
+    
+    {\hypersetup{linkcolor=GREYDARK}\minitoc\newpage}
+    
+\graphicspath{{chap5-GTDrift/figures/}}
+
+\section{Introduction}
+Genetic drift refers to stochastic fluctuations in allele frequencies within a population across successive generations. These fluctuations arise due to the inherently random sampling of individuals that reproduce and pass on their alleles to subsequent generations~\citep{wright_evolution_1929, graur_fundamentals_2000}. Population genetics principles state that the ability of natural selection to promote beneficial mutations or eliminate deleterious mutations depends on the intensity of selection (\acrshort{s}) relative to the power of genetic drift (defined by the effective population size, \acrshort{Ne}): if the selection coefficient is sufficiently weak relative to drift ($|\acrshort{Ne}\acrshort{s}| < 1 $), alleles behave as if they are effectively neutral~\citep{kimura_mutation_1963, ohta_slightly_1973}. Thus, random drift sets an upper limit on the efficiency of selection. This limit is called the “drift barrier”~\citep{lynch_frailty_2007, lynch_evolution_2010}. 
+Genomes that are subject to intense genetic drift are expected to be less well-optimized compared to those experiencing lower genetic drift. Michael Lynch proposed that variation in the ability to purge slightly deleterious mutations (\textit{i.e.} variation in \acrshort{Ne}) can account for differences in genome characteristics among species~\citep{lynch_origins_2003}. This hypothesis has been empirically validated for multiple genome characteristics and phylogenetic clades. For example, it was shown that the genomes of crustacean species with low \acrshort{Ne}~values are larger than those of their sister species~\citep{lefebure_less_2017}. Moreover, species with large \acrshort{Ne}~tend to have a lower mutation rate than species with low \acrshort{Ne}, illustrating the notion that natural selection acts to improve replication fidelity, within the constraints defined by random genetic drift~\citep{lynch_genetic_2016}.
+
+We recently examined the variations in transcriptome complexity across animal species in light of the “drift barrier” hypothesis~\citep{benitiere_random_2024}. 
+In multicellular eukaryotes, the vast majority of genes give rise to multiple isoforms through alternative splicing~\citep{chen_correcting_2014}. This phenomenon has attracted a great deal of interest since its discovery almost 50 years ago~\citep{berget_spliced_1977}. Alternative splicing is commonly hypothesized to be adaptive, because it can increase the number of biological functions that are encoded in each genome. Indeed, numerous instances of alternative splicing patterns with beneficial effects have been identified~\citep{mudge_origins_2011, barbosa-morais_evolutionary_2012, merkin_evolutionary_2012, reyes_drift_2013, verta_role_2022, singh_importance_2022, wright_alternative_2022}. However, these examples represent only a small fraction of all splice variants that are now known, especially given the substantial detection power brought by next-generation RNA sequencing (RNA-seq) techniques. Many of the splice variants that can now be detected with RNA-seq are present at very low frequencies~\citep{gonzalez-porta_transcriptome_2013, tress_alternative_2017} and are poorly conserved during evolution~\citep{barbosa-morais_evolutionary_2012, merkin_evolutionary_2012}. It was thus hypothesized that they may be the result of errors of the splicing machinery, rather than functional isoforms~\citep{pickrell_noisy_2010, gout_large-scale_2013, xu_human_2014, saudemont_fitness_2017, xu_alternative_2018, liu_most_2018, liu_human_2018, xu_evidence_2019, xu_different_2020, zhang_gene_2022}. Notably, according to the “drift barrier” hypothesis, one may hypothesize that if alternative splicing (\acrshort{AS}) primarily serves functional roles, the rate of alternative splicing should increase with \acrshort{Ne}. Conversely, if \acrshort{AS} predominantly involves deleterious processes, its rate should decline with increasing \acrshort{Ne}. We applied this reasoning in our previous work~\citep{benitiere_random_2024}, which led us to deduce that \acrshort{AS} is predominantly non-functional.
+
+This methodology for exploring the impact of \acrshort{Ne}~on biological processes holds potential for broader applications. For example, one could examine the functional importance of alternative polyadenylation sites~\citep{xu_alternative_2018}.
+Such investigations demand cross-species comparative transcriptomics analyses, a task facilitated by the abundant availability of publicly accessible RNA-seq data. Yet, analysis of transcriptome sequencing data is resource-intensive in terms of time, energy, and computational power. To facilitate future analyses, we provide a comprehensive database that streamlines the process by offering pre-processed data. This dataset includes proxies for effective population size, sets of orthologous single-copy genes, gene expression levels, and intron-centered alternative splicing frequencies, along with phylogenetic trees to control for phylogenetic inertia. These resources have been compiled for 16,000 RNA-seq samples spanning 1,506 multicellular eukaryotic species.
+
+This database, that we name GTDrift, complements other public transcriptomic data resources, such as Bgee~\citep{bastian_bgee_2020}, which provides gene expression levels for 52 species (Version 15.0.1), but not alternative splicing frequencies. Other databases do provide alternative splicing frequencies. For example, MeDAS~\citep{li_medas_2020} provides \acrshort{AS} data for 18 metazoan species, and MetazExp~\citep{liu_metazexp_2021} provides data for 72 metazoan species. This latter resource is substantial, including data for $\approx$ 53,000 RNA-seq samples. However, this database favors insects (53 species, with $\approx$ 26,000 RNA-seq samples for \textit{Drosophila melanogaster}) and does not include any representative of the vertebrate clade, for which more computational resources are required because of their large genomes. Our database encompasses a broader phylogenetic distribution of species (\hyperref[fig:gtdrift1]{Fig. 1}), with 93 green plant species, 561 invertebrates and 853 vertebrates. Moreover, while other public databases such as MetazExp are aimed at biologists who want to analyze alternative splicing patterns in a gene-by-gene manner through web queries, in GTDrift we provide all data in flat files, which enable downstream computational analyses. GTDrift is thus mainly aimed at users with some computational skills. Nevertheless, we have created a user-friendly Shiny app to facilitate exploration of the database and species-specific data downloads~\citep{chang_shiny_2024}.
+
+In GTDrift, we used assemblies and annotations data collected from The National Center for Biotechnology Information (NCBI)~\citep{sayers_database_2022}, as well as publicly available RNA-seq data to investigate alternative splicing patterns and gene expression profiles. We computed summary statistics across all analyzed RNA-seq samples for each species, which enabled us to determine whether the available sequencing depth is sufficient for the study of alternative splicing.
+To ensure comparability across species, we annotated Benchmarking Universal Single Copy Orthologs (\acrshort{BUSCO})~\citep{waterhouse_busco_2018} genes in all species and provide phylogenetic trees to control for phylogenetic inertia.
+
+We believe that this tremendous amount of information should be shared with the scientific community, because it provides the means to investigate the impact of genetic drift on genome and transcriptome architecture, on a broad phylogenetic scale.
+
+\section{Methods}
+\label{sec:methods}
+\subsection{Species selection}
+The first criterion for species inclusion in GTDrift is the availability of a genome assembly and annotation in the NCBI database~\citep{ncbi_resource_coordinators_database_2018, sayers_database_2022}, as well as the availability of RNA-seq data in the Short Read Archive~\citep{leinonen_sequence_2011}. We included 1,506 multicellular eukaryotic species. This collection encompasses 1,413 animal species as well as 93 species of green plants (\hyperref[fig:gtdrift1]{Fig. 1}). Our Snakemake pipeline can be applied to any species for which genome sequence, genome annotation and RNA-seq data are available, which will enable us to further expand GTDrift in the future\citep{molder_sustainable_2021}.
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=0.9\textwidth]{Figure1.pdf}
+                                                                           
+    \caption[Phylogenetic distribution of the species included in the GTDrift database]{\textbf{Phylogenetic distribution of the species included in the GTDrift database.} The phylogeny was retrieved from TimeTree~\citep{kumar_timetree_2022}. Not all species studied are present (N=1,221).\newline}
+    \label{fig:gtdrift1}
+\end{figure}
+
+\subsection{Collecting life history traits}
+We queried several databases to acquire three specific life history traits, namely: maximum longevity, body mass, and body length. These traits were previously identified as suitable proxies for estimating the effective population size~\citep{romiguier_comparative_2014, waples_life-history_2016, figuet_life_2016, galtier_adaptive_2016, weyna_relaxation_2020}. For eusocial species, which live in colonies and have both reproductive and non-breeding individuals, we gather data on the queen of the colony. For solitary species, we collected data for females if available; otherwise, males were considered. 
+
+We employed several distinct methodologies to screen the databases.
+We initially used a manual approach to search across various sources of information, including scientific papers and databases. 
+
+We manually searched for information on life history traits from four prominent databases, which encompass diverse taxonomic groups. The Animal Ageing and Longevity Database (AnAge)~\citep{tacutu_human_2013}, is renowned for its comprehensive collection of vertebrates, particularly mammals. The Encyclopedia of Life (\acrshort{EOL})~\citep{wilson_encyclopedia_2003, parr_encyclopedia_2014} encompasses a wide spectrum of species, prominently featuring invertebrates. The Animal Diversity Web (\acrshort{ADW})~\citep{myers_animal_2023}, is a particularly rich resource for invertebrates. The FishBase~\citep{froese_fishbase_2023} predominantly houses data on teleostei species. 
+While AnAge furnishes extensive information regarding body mass and lifespan, it is lacking data pertaining to body length (\hyperref[fig:gtdrift2]{Fig. 2A,B,C}). Furthermore, as previously noted, certain databases are tailored to specific clades. For instance, in comparison to \acrshort{EOL} and \acrshort{ADW}, AnAge contains relatively fewer records for invertebrates (\hyperref[fig:gtdrift2]{Fig. 2D,E,F}). 
+
+We then made efforts to automate the manual search procedures. The primary automated procedure involved the development of a bash script, which utilized the Latin nomenclature of the species to navigate the textual content within the research pages of the 4 databases listed above. The bash script was designed to extract sentences, words, and numerical data in proximity to keywords such as "longevity", "mass", and "weight", serving as indicators of relevant information.
+Its output was then reformatted through an R script. While this approach proved effective for databases like AnAge, EOL, and FishBase, its applicability to the \acrshort{ADW} database was limited due to the manner in which information is embedded within textual paragraphs.
+Consequently, we employed an alternative method for the \acrshort{ADW} database, involving machine learning and Natural Language Processing Question-Answering techniques. We obtained a trained model named "tinyroberta-squad2" from huggingface.co~\cite{wolf_huggingfaces_2020}. This model was used to answer questions related to specific attributes, such as `what is the body length ?'; `what is the body mass ?'; `what is the longevity ?'. Each question retrieved a pool of 100 potential answers derived from the database's textual content, ranked by their predictive scores provided by the model. 
+
+We implemented an iterative selection process to identify the highest predicted answer containing relevant units and numeric values. To avoid redundancy, the selected answer was then removed from the text, and the process was repeated up to 10 times. The entire procedure was implemented in a Python script. We processed the script's output to restructure the obtained results.
+
+Discrepancies between the manual approach and the other two methodologies were further re-investigated manually and corrected as needed after a further re-reading of the text. As a result, the curated dataset that we share reflects our highest level of confidence.
+
+In total, our data collection effort resulted in the acquisition of life history traits for 969 metazoan species.
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=\textwidth]{Figure2.pdf}
+                                                                           
+    \caption[Representation of life history traits retrieved from diverse data sources]{\textbf{Representation of life history traits retrieved from diverse data sources.} Depiction of data origins for lifespan (\textbf{A}), body length (\textbf{B}), and body mass (\textbf{C}). Additionally, distribution of species and their respective clades with at least one recorded life history trait in \acrshort{ADW} (\textbf{D}), \acrshort{EOL} (\textbf{E}), and AnAge (\textbf{F}).\newline}
+    \label{fig:gtdrift2}
+\end{figure}
+
+\subsection{Acquisition of the reference genome sequence and annotations}
+Using the sra-tools software, we performed an automated identification of the reference genome for each species. Subsequently, we downloaded the annotation data in GFF format, the nucleotide coding sequences in FASTA format, and the peptide sequences in FASTA format from the NCBI database~\citep{sayers_database_2022}.
+
+\subsection{$dN/dS$ pipeline}
+We developed a pipeline to estimate the rate of non-synonymous substitutions divided by the synonymous substitutions rate (${dN}/{dS}$), representing the frequency at which non-synonymous changes occur relative to synonymous ones. Since non-synonymous substitutions are commonly perceived as errors, ${dN}/{dS}$ serves as a measure of the rate of erroneous substitutions per neutral substitution. This ratio is directly dependant of \acrshort{Ne}~as it is jointly determined by the distribution of selection coefficient of new mutations (s) and the magnitude of genetic drift as defined by \acrshort{Ne}~\citep{yang_synonymous_1998, nielsen_estimating_2003}. The transcriptome-wide ${dN}/{dS}$ is expected to rise over prolonged periods of small \acrshort{Ne}~due to the increasing number of slightly deleterious mutations reaching fixation~\citep{ohta_nearly_1992, galtier_adaptive_2016}.
+
+Estimating the ${dN}/{dS}$ necessitates the annotation of genes shared across all species, their evolutionary history depicted by a phylogenetic tree, and finally a comparative analysis of site evolution to derive the ${dN}/{dS}$ ratio.
+
+\subsubsection{BUSCO genes identification}
+We used the \acrshort{BUSCO} v.3.1.0 software to identify single-copy orthologous genes within three datasets selected from OrthoDB v9~\citep{zdobnov_orthodb_2017}: eukaryota (N=303 genes), embryophyta (N=1,440 genes) and metazoan (N=978 genes) sourced from \acrshort{BUSCO}v3~\citep{waterhouse_busco_2018, seppey_busco_2019, manni_busco_2021}. The search was performed against the longest annotated protein sequences \textit{per} gene within each genome.
+
+\subsubsection{Phylogenetic tree reconstruction}
+Due to the considerable time and resource demands associated with phylogenetic inference for large numbers of species, we employed a strategy in which the analysis was partitioned by clades. 
+On initial releases of the database, which did not encompass all current species, we performed 3 comparable and independent analyses that rely on the three \acrshort{BUSCO} datasets, corresponding to the following lineages: eukaryota, embryophyta and metazoa.
+For each \acrshort{BUSCO} dataset, we selected a subset of species that matched the lineage of interest from the available database records at the time of analysis. All of these selected species underwent transcriptomic analyses (see \nameref{sec:transcriptomic_analyses}). We then collected the longest corresponding proteins identified in each species for each \acrshort{BUSCO} gene family. We removed proteins for which the amino acid sequence provided with the annotations did not perfectly correspond to the translation of the corresponding coding sequences. We then aligned the resulting sets of protein-coding sequences for each \acrshort{BUSCO} gene, using the codon alignment option in PRANK v.170427~\citep{loytynoja_phylogeny-aware_2008}. We translated the codon alignments into protein alignments using the R package seqinr~\citep{charif_seqinr_2007}.
+
+A filter was applied to retain only genes for which enough species have been detected (85\% of the analyzed species), reducing the eukaryota set to 126 genes (embryophyta N=387 genes, metazoa N=731 genes). Then, species were removed from the analysis if they had less than 80\% of the studied genes, reducing the number of studied species from 336 to 279 for the eukaryota \acrshort{BUSCO} dataset (embryophyta 93 to 80 species, metazoa 293 to 257 species).
+
+To infer the phylogenetic tree rapidly, we sub-sampled the resulting multiple alignments, selecting alignments with the highest number of species (eukaryota N=25 genes, embryophyta N=77 genes, metazoa N=146 genes). We then concatenated these alignments and kept sites that were aligned in most of the analyzed species (see information provided in the supplementary archive for more details).
+The final alignment for the eukaryota \acrshort{BUSCO} dataset included 279 taxa (embryophyta N=80 species, metazoa N=257 species) taxa and 600 sites (embryophyta N=700 sites, metazoa N=3,000 sites). We used RAxML-NG~\citep{kozlov_raxml-ng_2019}, to infer the species phylogeny on these final alignments. RAxML was set to perform one model \textit{per} gene with a fixed empirical substitution matrix (LG), empirical amino acid frequencies from alignment (F) and 8 discrete GAMMA categories (G8). These parameters were specified in a partition file with one line \textit{per} \acrshort{BUSCO} gene multiple alignment. The analysis generated at least 10 starting trees. The best-scoring topology was kept as the final \acrshort{ML} tree and 10 bootstrap replicates have been generated.
+
+The phylogenetic trees were rooted using as a reference source the TimeTree phylogeny, which synthesizes data from numerous published studies, despite its incomplete representation of all species~\citep{kumar_timetree_2022}.
+
+To encompass a broader spectrum of the species included in our latest database release, the one published here, we also reconstructed phylogenetic trees \textit{per} clade. To do this, we divided the full set of metazoan species in 9 groups (Hymenoptera, Diptera grouped with Lepidoptera under the superorder Mecopterida, Nematoda, other insects, Aves, Mammalia, Teleostei, other vertebrates, and finally other invertebrates). We used as a basis for the analysis 73 highly prevalent metazoan \acrshort{BUSCO} genes among the 731 genes preselected in the metazoa analysis. We applied the protocol described above to each individual clade. The resulting clade-specific trees were merged using outgroup species as a reference point to construct the complete metazoan phylogenetic tree.
+
+\subsubsection{${dN}/{dS}$ computation}
+We computed ${dN}/{dS}$ ratios for \acrshort{BUSCO} gene families that were present in at least 85 percent of the species under investigation. We conducted four independent analyses. We first analyzed each of the three \acrshort{BUSCO} gene sets: eukaryota (N=126 genes), embryophyta (N=387 genes), metazoa (N=731 genes). We also performed an analysis `\textit{per} clade', as explained above for the phylogenetic tree reconstruction, using the same 731 genes preselected in the metazoa analysis. Codon alignments obtained using PRANK~\citep{loytynoja_phylogeny-aware_2008} served as the basis for this estimation. To manage the computational memory demands during the substitution rate estimation step, we segmented the sequence alignments into clusters. Following the approach recommended by~\citet{bolivar_gc-biased_2019}, these clusters were defined based on the average \acrshort{GC3} content across species, in order to group genes with similar parameters. We then concatenated the alignments within each group, obtaining alignments that were 200 \acrshort{kb} long on average. This process yielded 13 groups for eukaryota (15 for embryophyta and 73 for metazoa).
+We used bio++ v.3.0.0 libraries~\citep{dutheil_non-homogeneous_2008, gueguen_bio_2013, bolivar_gc-biased_2019} to estimate the ${dN}/{dS}$ on each branch of the phylogenetic tree, for each concatenated alignment.
+
+In a first step, we used an homogeneous codon model implemented in bppml to infer the most likely branch lengths, codon frequencies at the root, and substitution model parameters. We used YN98 (F3X4)~\citep{yang_synonymous_1998} substitution model, which allows for different nucleotide content dynamics across codon positions. In a second step, we used the MapNH substitution mapping method to count synonymous and non-synonymous substitutions~\citep{dutheil_efficient_2012, gueguen_unbiased_2018}. 
+We defined dN as the total number of non-synonymous substitutions divided by the total number of non-synonymous mutational opportunities, both summed across concatenated alignments, for each branch of the phylogenetic tree. Likewise, we defined dS as the total number of synonymous substitutions divided by the total number of synonymous mutational opportunities, both summed across concatenated alignments. The \textit{per}-species ${dN}/{dS}$ corresponds to the ratio between dN and dS, on the terminal branches of the phylogenetic tree. We also provide the dN and dS values for each branch within the phylogenetic trees.
+
+For the `\textit{per} clade' approach, the results pertaining to distinct clades were combined in a single table.
+
+\subsection{Transcriptomic analyses}
+\label{sec:transcriptomic_analyses}
+We developed a pipeline facilitating the detection of alternative splicing events within genes. This process entails the selection of RNA-seq data, subsequent alignment to the reference genome, and the identification of splicing events through the recognition of introns. Utilizing the aligned transcriptomic data, we computed gene expression levels across each sample.
+
+\subsubsection{Selection of the RNA-seq samples}
+To extract RNA-seq data, we queried the Short Read Archive (SRA) database for samples where the library source was `TRANSCRIPTOMIC' and the library strategy was `RNA-seq'. 
+
+For perfect comparability of transcriptome data among species, we would need to have the same representation of individual tissues, developmental stages \textit{etc.} for each species, with data generated with the same protocol by the same person. However, such data exist only for limited sets of species (\textit{e.g.},~\citet{cardoso-moreira_gene_2019}). 
+Here, we decided not to filter the RNA-seq samples on criteria pertaining to sample origin or experimental protocols, mainly because the relevant information is not always provided in sufficient detail in the SRA database~\citep{leinonen_sequence_2011}. Moreover, depending on the clade, the biological sample of origin can vary from "whole body" in insects, to specific tissues or cell types in mammals. Thus, perfectly comparable sample collections are difficult to obtain across such a broad phylogenetic scale.
+
+
+Rather than filtering samples on these criteria prior to inclusion in the database, in GTDrift we provide users with the information collected from SRA for all \acrshort{RNA}-seq samples. This information includes the library type, the date of extraction and the name of the laboratory that performed the experiment (see \nameref{sec:datarecords}).
+
+After evaluating the amount of \acrshort{RNA}-seq data that is needed to evaluate global alternative splicing patterns for each species (see below), we decided to include a maximum of 50 \acrshort{RNA}-seq samples \textit{per} species in GTDrift. We included more than 50 samples for 150 species (43 embryophyta, 107 metazoa), for which we performed more detailed analyses, considering various tissues or developmental stages.
+
+In the current version of GTDrift, the \acrshort{RNA}-seq dataset encompasses a total of 491 distinct species, including 92 plants and 399 animals. (\hyperref[fig:gtdrift3]{Fig. 3A}).
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=0.75\textwidth]{Figure3.pdf}
+                                                                           
+    \caption[Species with transcriptomic data and alternative splicing estimation]{\textbf{Species with transcriptomic data and alternative splicing estimation.} (\textit{cf} Fig. 2A~\citet{benitiere_random_2024}) \textbf{A}: Taxonomic distribution of the species for which transcriptomic data was included in GTDrift. \textbf{B}: Definition of the variables used to compute the relative splicing frequency of a focal intron, compared to splice variants with a common alternative splice boundary (RAS) or compared to the unspliced form  (RANS): $\mathrm{N_s}$: number of spliced reads corresponding to the precise excision of the focal intron; $\mathrm{N_a}$: number of reads corresponding to alternative splice variants relative to this intron (\textit{i.e.} sharing only one of the two intron boundaries); $\mathrm{N_u}$: number of unspliced reads, co-linear with the genomic sequence. \textbf{C}: Definitions of the main variables used in this study. The definition of the variables corresponds to the one provided in \citet{benitiere_random_2024}.\newline}
+    \label{fig:gtdrift3}
+\end{figure}
+
+\subsubsection{Indexing genomes and aligning RNA-seq data}
+The RNA-seq alignment phase represents the most time-consuming stage in the pipeline (\hyperref[fig:gtdrift4]{Fig. 4}), and can extend up to one week when utilizing 16 cores for each RNA-seq dataset, particularly for larger genomes such as those of mammals.
+
+For this step, HISAT2 version 2.1.0 was employed to align RNA-seq reads to the respective reference genomes~\citep{kim_graph-based_2019}. To enhance the sensitivity of splice junction detection, we constructed genome indexes incorporating annotated intron and exon coordinates along with genome sequences. The maximum permitted intron length was set at 2,000,000 base pairs. The processed and compressed files generated during this procedure can amass a size exceeding 20 terabytes.
+
+We extracted intron coordinates from the HISAT2 alignments, utilizing a custom Perl script that scanned for CIGAR strings containing "N" characters, which indicate skipped regions in the reference sequence. For intron identification and quantification, we exclusively utilized uniquely mapped reads with a maximum mismatch fraction of 0.02. In the context of new intron identification, we imposed a minimum anchor length (\textit{i.e.}, part of the read that spans each of the two exons flanking a given intron) of 8 base pairs. We then quantified intron splicing frequencies by including aligned reads with a minimum anchor length of 5 base pairs. We retained predicted introns exhibiting GT-AG, GC-AG, or AT-AC splice signals and determined the intron strand based on the splice signal.
+
+Introns were assigned to genes if at least one of their boundaries was within 1 base pair of annotated exon coordinates, combined across all isoforms for each gene. Intron assignments were limited to those that could be unambiguously associated with a single gene. Notably, we differentiated between annotated introns, present in the reference genome annotations, and unannotated introns, identified through RNA-seq data and assigned to previously annotated genes.
+
+We identified introns situated within protein-coding regions. To do this, for each protein-coding gene, we extracted annotated start and stop codon positions across all annotated isoforms. The minimum start codon and maximum end codon positions were identified, and introns located upstream or downstream of these extreme coordinates were considered as interrupting untranslated regions.
+
+\subsubsection{Alternative splicing variables}
+\label{sec:asvariables}
+For each intron, we recorded two key variables: $\mathrm{N_s}$ representing the number of reads corresponding to the precise removal of the intron (referred to as spliced reads), and $\mathrm{N_a}$ representing the count of reads supporting alternative splicing events (\textit{i.e.} spliced variants sharing only one of the two boundaries of the focal intron). Additionally, we denoted $\mathrm{N_u}$ as the count of unspliced reads that align linearly with the genomic sequence and span at least 10 base pairs on both sides of an exon-intron junction. These definitions are visually clarified in (\hyperref[fig:gtdrift3]{Fig. 3B,C}). Subsequently, we introduced the relative measurement of the target intron's abundance compared to introns with a single alternative splice boundary ($\mathrm{RAS=\frac{N_s}{N_s~+{N_a}}}$), as well as relative to unspliced reads ($\mathrm{RANS=\frac{N_s}{N_s+~\frac{N_u}{2}}}$).
+
+To compute these ratios, we required at least 10 reads in their denominators. Thus, we computed the RAS only when ($\mathrm{N_s+N_a})\geq10$, and the RANS only when ($\mathrm{N_s+\frac{N_u}{2}})\geq10$. We divided $\mathrm{N_u}$ by 2 because unspliced reads that span the two intron boundaries likely refer to the same intron retention event. If these conditions were not met, the resulting values were designated as unavailable (NA). These ratios were computed utilizing data from all available RNA-seq samples, unless explicitly specified (\textit{e.g.} in sub-sampling analyses). Based on these ratios, we divided introns into three categories: major-isoform introns, defined as those introns that have RANS $>$ 0.5 and RAS $>$ 0.5 (these likely correspond to the introns of major isoforms~\citep{gonzalez-porta_transcriptome_2013, tress_alternative_2017, benitiere_random_2024}); minor-isoform introns, defined as those introns that have RANS $\leq$ 0.5 or RAS $\leq$ 0.5 (these introns are detected in a minority of transcripts); unclassified introns, which do not satisfy the above conditions.
+
+\subsubsection{Gene expression estimation}
+Gene expression levels were computed using Cufflinks version 2.2.1~\citep{trapnell_transcript_2010, roberts_identification_2011}, utilizing the read alignments obtained with HISAT2 for each individual RNA-seq sample. We thus evaluated gene expression levels with the Fragment \textit{Per} Kilobase of exon \textit{per} Million mapped reads (\acrshort{FPKM}) method. To determine the representative expression level of each gene, the mean \acrshort{FPKM} was calculated across all samples, taking into consideration the sequencing depth of each sample, called `weighted \acrshort{FPKM}'. We used this measure to evaluate the relationship between alternative splicing rates and gene expression levels, within each species.
+
+\subsubsection{Estimation of the sequencing depth}
+We determined for each gene the union of all annotated exon coordinates (termed here exon blocks). Using bedtools v2.25.0~\citep{quinlan_bedtools_2010}, we assessed the read coverage at each position of the exon blocks. The average exonic \textit{per}-base read coverage was subsequently computed for each gene. The sequencing depth of a given sample was evaluated through the median \textit{per}-base read coverage across \acrshort{BUSCO} (Benchmarking Universal Single-Copy Orthologs) genes.
+
+\subsection{Data visualisation using a Shiny app}
+A Shiny app available at \url{https://lbbe-shiny.univ-lyon1.fr/ShinyApp-GTDrift/} was deployed to allow users to visualize and compare the summarized data~\citep{chang_shiny_2024}. Most of the graphics shown in this paper are directly reproducible from the app. In this app, users can also visualize intra-species variables, for example comparing introns or gene characteristics. Furthermore, a specific tab is dedicated to the investigation of gene structure in relation to the splicing attributes found in the underlying database. Users can also visualize the phylogenetic tree and employ these trees for conducting Phylogenetic Generalized Least Square regression analyses.
+
+The app is organized in several panels or "tabs" in the web page.
+
+The tab `Inter-species graphics' facilitates the comparison of genome characteristics across different species through graphical representation. Additionally, users have the option to upload their own data in a tab-separated text format, where each species is represented in a separate row, with the variables of interest organized in columns. An example of such a tabular dataset can be found in the repository. 
+
+The `Inter-species Axis' tab explains the variables available in the `Inter-species graphics' tab.
+
+The `Intra-species graphics' tab permits the exploration of characteristics within a species, focusing on introns or on genes. Furthermore, users have the ability to retrieve metadata related to \acrshort{BUSCO} annotation, gene expression, or intron splicing events (see \nameref{sec:methods}).
+
+The `Intra-species Axis' tab describes the variables featured in the `Intra-species graphics' tab.
+
+Within the `Gene structure' tab, users can delve into the introns detected in RNA-seq alignments for a specific gene. These introns are color-coded based on various criteria, including their location within the CDS or outside of it, as well as whether they are classified as major or minor-isoform introns (see \nameref{sec:methods}).
+
+The `Phylogenetic tree' tab facilitates the examination of phylogenetic trees used for conducting Phylogenetic Generalized Least Squares regression within the `Inter-species graphics' tab.
+
+\subsection{Data and code availability}
+All processed data that we generated and used in this study, as well as the scripts that we used to analyze the data and to generate the figures, are available at the following Zenodo DOI: \url{https://doi.org/10.5281/zenodo.10022493}. 
+The database is provided on Zenodo with the DOI: \url{https://doi.org/10.5281/zenodo.10017653}.
+Finally, the Shiny app is available at: \url{https://lbbe-shiny.univ-lyon1.fr/ShinyApp-GTDrift/} and on Zenodo with the DOI: \url{https://doi.org/10.5281/zenodo.10022520}.
+
+\section{Results}
+\subsection{Description of the data available in GTDrift}
+\label{sec:datarecords}
+
+In GTDrift, we provide a manageable number of compressed data tables for each species processed via our pipeline (\hyperref[fig:gtdrift4]{Fig. 4}). Tables are stored in tab-delimited text format, which makes them easy to access for users with experience in bioinformatics. They are user-friendly because of the simplicity of their contents. To access these tables, users can visit the Zenodo DOI: \url{https://doi.org/10.5281/zenodo.10017653} and select their desired data type. The data can also be easily explored through a web application written in Shiny at \url{https://lbbe-shiny.univ-lyon1.fr/ShinyApp-GTDrift/}. Data exploration is thus easily accessible even for users who do not have a background in bioinformatics. 
+
+Our database is centered around transcriptomics data. At the time of publication, the database contained over 15,935 RNA-seq samples distributed over 491 embryophytes and metazoans (\hyperref[fig:gtdrift1]{Fig. 1}), providing gene expression and alternative splicing events data. Additionally, we have enriched the database with annotations for orthologous single-copy genes (\acrshort{BUSCO} genes) and proxies of effective population size, including the molecular evolutionary rate ${dN}/{dS}$ and life history traits such as longevity, body mass, body length. We used similar types of data in our recent publication exploring the relationship between random genetic drift and alternative splicing patterns \citep{benitiere_random_2024}. However, here we provide considerably more data, for 1,506 species compared to 53 in this publication. 
+
+Below, we provide information on the data types that are currently available in GTDrift. 
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=\textwidth]{Figure4.pdf}
+                                                                           
+    \caption[Description of the bioinformatic analysis pipeline]{\textbf{Description of the bioinformatic analysis pipeline.} (Adapted from Supplementary Fig. 11~\citet{benitiere_random_2024}) First, we retrieved genomic sequences and annotations from the NCBI Genomes database. We aligned RNA-seq reads on the corresponding reference genomes  with HISAT2. We used these alignments to estimate various variables related to splicing patterns (see \hyperref[fig:gtdrift2]{Fig. 2}), to compute the \acrshort{AS} rate, and to estimate gene expression using Cufflinks. To compute the ${dN}/{dS}$ ratios, we first identified \acrshort{BUSCO} genes with \acrshort{BUSCO}v3 and aligned their coding sequences (CDS) using PRANK (codon model). We reconstructed a phylogenetic tree using RAxML-NG. Using bio++, we estimated ${dN}/{dS}$ along the phylogenetic tree on concatenated alignments. This pipeline was previously used in \citet{benitiere_random_2024}.\newline} 
+    \label{fig:gtdrift4}
+\end{figure}
+
+\subsubsection{Life history traits}
+The table labeled `life\_history\_traits.tab' comprises values pertaining to three distinct traits (longevity, body mass, and body weight), for 969 species. This table includes bibliographic references which attribute these values to each species. The species are defined by their scientific names and by the corresponding NCBI taxonomy identifier (taxID). 
+
+\subsubsection{Protein-coding sequence evolution features}
+We provide estimates of the representative ${dN}/{dS}$ ratio for most species (N=1,324 species after filtering for a sufficient number of annotated orthologous genes). The data are available in the directory `dNdS'.
+
+We provide the phylogenetic tree of the studied species, with the ${dN}/{dS}$ ratios as branch lengths, in the Newick file format. We provide this data separately for the four approaches used to estimate the ratios ${dN}/{dS}$, using the eukaryota, embryophyta or metazoa \acrshort{BUSCO} gene sets, or a different gene set for each clade (\nameref{sec:methods}). In addition, we provide a table comprising the dN and dS values for each terminal branch of the phylogenetic tree, along with the species scientific name and NCBI taxonomy ID, for each of the four approaches.
+
+\subsubsection{Gene expression}
+In the `Transcriptomic' directory, each species is represented by a dedicated table named `by\_gene\_analysis.tab.gz'. This table contains annotated gene coordinates, the mean and median \acrshort{FPKM} (Fragments \textit{Per} Kilobase of exon \textit{per} Million mapped reads) across samples. Additionally, the table includes information about RNA-seq read coverage for exonic regions for each gene, including the total read coverage across samples. The individual gene expression data for each RNA-seq experiment can be accessed within the `RUN' directory. The data are provided in a separate directory for each SRA accession number. The file `by\_gene\_db.tab.gz' containing the exon coverage and the \acrshort{FPKM} measured for each gene corresponding in line to the previous file `by\_gene\_analysis.tab.gz'.
+
+\subsubsection{Alternative splicing data}
+For each species, we provide a summarized table named `by\_intron\_analysis.tab.gz', containing for each intron the cumulative counts of spliced reads ($\mathrm{N_s}$), the number of reads supporting alternative splicing of this introns ($\mathrm{N_a}$), and the number of unspliced reads overlapping with this intron ($\mathrm{N_u}$) detected through RNA-seq analysis (\nameref{sec:methods}). This table contains data combined across all analyzed RNA-seq samples. Detailed information for individual RNA-seq experiments can be found within the `RUN' directory, in the file `by\_intron\_db.tab.gz'. In these files, introns are listed in the same order as in the file `by\_intron\_analysis.tab.gz'.
+
+\subsubsection{RNA-seq sample description}
+In the file named `SRAruninfo.tab', we provide information extracted from the SRA database, for each RNA-seq sample. Depending on the sample, this information can include the library source, the tissue from which the sample is derived, the sex of the sampled individual, the lab that conducted the analysis, the methods used to prepare the library, \textit{etc}.
+
+\subsubsection{BUSCO genes identification}
+In the directory `BUSCO\_annotations', we provide the correspondence between NCBI gene identifiers and \acrshort{BUSCO} gene identifiers, determined for three distinct \acrshort{BUSCO} datasets: eukaryota, metazoa, and embryophyta.
+
+\subsection{Data quality validation}
+\label{sec:TechnicalValidation}
+\subsubsection{Acquiring life history traits}
+To facilitate the acquisition of life history traits, we have devised and shared a pipeline that uses an automatic screening technique complemented by a machine learning method.
+
+To assess the effectiveness of the automatic screening technique that we used to extract life history traits from various databases, we conducted a comparative analysis, contrasting it with the manual methodology. We also compared it to the machine learning (ML) approach for the \acrshort{ADW} database. The screening procedure yielded accurate information with varying false positive rates depending on the source database, as follows: AnAge (98.9\% accuracy; 0\% false positive), fishbase (100\%; 0.2\%), EOL (94.5\%; 0.18\%), and \acrshort{ADW} (88\%; 5.4\%). These results highlight the utility of our screening pipeline for identifying three key life history traits across AnAge, \acrshort{EOL}, \acrshort{ADW}, and fishbase databases.
+
+For the \acrshort{ADW} database, the \acrshort{ML} approach exhibited a slight advantage over the screening method, and its results did not completely align with those obtained through the screening approach. Specifically, for life history traits, the \acrshort{ML} approach correctly retrieved 89.7\% of the results obtained through the manual approach, while introducing a 9.2\% false positive rate.
+
+When combining both the \acrshort{ML} approach and the screening process, we achieved a 95\% accuracy rate in identifying positive cases. However, a 7\% error rate persisted in this merged approach.
+
+In GTDrift, we provide data corresponding to a synthesis of the three methodologies including only manually-checked values (\nameref{sec:methods}).
+
+
+\subsubsection{Estimating the intensity of random drift}
+As expected, a positive correlation is observed in \hyperref[fig:gtdrift5]{Fig. 5A,B} between the different life history traits, used as indirect predictors of the effective population size (\acrshort{Ne})~\citep{romiguier_comparative_2014, waples_life-history_2016, figuet_life_2016, galtier_adaptive_2016, weyna_relaxation_2020}.
+
+
+\begin{figure}[t]  
+         \centering
+        \includegraphics[width=\textwidth]{Figure5.pdf}
+                                                                           
+    \caption[\Ne~proxies]{\textbf{\Ne~proxies.} \textbf{A}: Relationship between body length (cm, log scale) and longevity (days, log scale) of the organism. Each dot represents one species (colored by clade). \textbf{B}: Relationship between body length (cm, log scale) and the body weight (kg, log scale). \textbf{A,B}: Pagel's \textit{lambda} model is used to take into account the phylogenetic structure of the data in a regression model.\newline}
+    \label{fig:gtdrift5}
+\end{figure}
+
+When examining the ${dN}/{dS}$ ratio across distinct time scales and using various \acrshort{BUSCO} datasets, we consistently observe comparable ${dN}/{dS}$ ratios at terminal branches. This uniformity across a range of methodological approaches highlights their concordance (\hyperref[fig:gtdrift6]{Fig. 6A,B}). 
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=\textwidth]{Figure6.pdf}
+                                                                           
+    \caption[Reproducibility of the ${dN}/{dS}$ ratio]{\textbf{Reproducibility of the ${dN}/{dS}$ ratio.} \textbf{A}: Relation between the ${dN}/{dS}$ ratio on terminal branches of the phylogenetic tree of the metazoa set compared to the ones measured in the \textit{per} clades set. \textbf{B}: Relation between the ${dN}/{dS}$ ratio on terminal branches of the phylogenetic tree of the eukaryota set compared to the ones measured in the embryophyta and the metazoa set. \textbf{A,B}: LM stands for Linear regression Model and Pagel's \textit{lambda} model is used to take into account the phylogenetic structure of the data in a regression model.\newline}
+    \label{fig:gtdrift6}
+\end{figure}
+
+Furthermore, the observed ${dN}/{dS}$ ratio are significantly correlated with proxies derived from life history traits (\hyperref[fig:gtdrift7]{Fig. 7A,B}) as reported in the literature~\citep{romiguier_comparative_2014, figuet_life_2016}.
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=0.82\textwidth]{Figure7.pdf}
+                                                                           
+    \caption[Interplay between \Ne~proxies]{\textbf{Interplay between \Ne~proxies.} Correlation between the ${dN}/{dS}$ ratio on terminal branches of the phylogenetic tree of the \textit{per} clade set and life history traits:  longevity (days, log scale) (\textbf{A}), body weight (kg, log scale) (\textbf{B}), body length (cm, log scale) (\textbf{C}). \textbf{A,B,C}: Pagel's \textit{lambda} model is used to take into account the phylogenetic structure of the data in a regression model.\newline}
+    \label{fig:gtdrift7}
+\end{figure}
+
+\subsection{Quality of genome annotations}
+To assess gene expression levels and alternative splicing patterns, the quality of genome annotations is of paramount importance. We evaluated genome annotation quality by examining the presence of \acrshort{BUSCO} genes. We note that the results depend on the \acrshort{BUSCO} dataset that is used as a starting point. When using the \acrshort{BUSCO} dataset designed for eukaryota, which comprises 303 genes, we have effectively identified nearly all single-copy orthologous genes, and this feature exhibits a high degree of homogeneity across different species (\hyperref[fig:gtdrift8]{Fig. 8}). However, the aves clade demonstrates a deficiency in the number of \acrshort{BUSCO} genes compared to the anticipated count based on \acrshort{BUSCO} expectations. This is expected given the known genome incompleteness problem for this clade, due to the presence of GC-rich chromosomes~\citep{li_novo_2022}. 
+
+Because the eukaryota \acrshort{BUSCO} gene set is limited, we also performed gene identification for the metazoa and embryophyta \acrshort{BUSCO} datasets, leading to substantially larger collections of genes. Specifically, we detected 978 \acrshort{BUSCO} genes for the metazoa dataset and 1,440 genes for the embryophyta dataset.
+
+\begin{figure}[t]   
+         \centering
+        \includegraphics[width=\textwidth]{Figure8.pdf}
+                                                                           
+    \caption[BUSCO genes annotation]{\textbf{\acrshort{BUSCO} genes annotation.} Proportion of \acrshort{BUSCO} genes, from the \acrshort{BUSCO} gene set eukaryota (N=303 genes), identified in each species.\newline}
+    \label{fig:gtdrift8}
+\end{figure}
+
+\subsection{Spliced introns classification}
+A significant body of literature has consistently reported that the majority of genes typically exhibit one predominant isoform~\citep{gonzalez-porta_transcriptome_2013, tress_alternative_2017}. This isoform is commonly termed "major isoform". Here, we aimed to assess the influence of sequencing depth on the identification of major-isoform introns, that is, those introns that belong to major isoforms (see \nameref{sec:asvariables}). Employing the model organism \textit{Drosophila melanogaster}, we randomly selected between 1 and 20 RNA-seq samples. For each subset of samples, we computed the median read coverage across the exons of \acrshort{BUSCO} genes, providing a standardized measure of transcriptome sequencing depth that can be compared across different species. Additionally, we tallied the count of introns falling into various categories (major-isoform introns, minor-isoform introns or unclassified introns - see \nameref{sec:methods}) for each subset of samples. This entire process was repeated 10 times (\hyperref[fig:gtdrift9]{Fig. 9A}).
+
+As expected, we observed that the number of major-isoform introns that could be identified increased with greater sequencing depth until it reached a threshold of 200 read coverage \textit{per} base (\hyperref[fig:gtdrift9]{Fig. 9A}). Beyond this threshold, no additional major-isoform introns are discernible. Simultaneously, the count of unclassified introns decreased to nearly zero, indicating that introns newly detected above the 200-read coverage threshold predominantly consisted of minor-isoform introns that shared a boundary with a major intron. Indeed, the count of minor-isoform introns continued to rise steadily beyond this point.
+
+We then assessed the proportion of annotated introns that fall within the categories defined above. Our results reveal that the majority of species exhibit well-annotated major-isoform introns, indicating the accuracy of the intron annotation (\hyperref[fig:gtdrift9]{Fig. 9B}). Additionally, as sequencing depth increases, we observed a decreasing fraction of annotated minor-isoform introns. This trend is consistent with expectations, given that higher sequencing depth expands the pool of rare variants and potential spontaneous errors that may not have been previously observed. It is important to note that there appears to be no inherent limit to this phenomenon, as the intricacies of alternative splicing machinery can give rise to unpredictable errors~\citep{benitiere_random_2024}.
+
+\begin{figure}[t]  
+         \centering
+        \includegraphics[width=0.9\textwidth]{Figure9.pdf}
+                                                                           
+    \caption[Sequencing depth impact on intron classification]{\textbf{Sequencing depth impact on intron classification.} \textbf{A}: Number of major (RANS $>$ 0.5 and RAS $>$ 0.5), minor (RANS $\geq$~5\% or RAS $\geq$~5\% ) and unclassified introns for \emph{Drosophila melanogaster}. The sequencing depth is measured by taking the median \textit{per}-base read coverage across \acrshort{BUSCO} genes from eukaryota gene set. \textbf{B}: \textit{Per} species major-isoform introns, minor-isoform introns and undetermined introns ($\mathrm{N_s})\geq10$) annotated proportion and sequencing depth measured by taking the median \textit{per}-base read coverage eukaryota \acrshort{BUSCO} genes.\newline}
+    \label{fig:gtdrift9}
+\end{figure}
+
+\section{Discussion}
+GTDrift is a comprehensive data resource facilitating investigations of genomic and transcriptomic characteristics alongside indicators of genetic drift intensity for distinct species. Notably, this resource offers information on life history traits, including longevity, adult body length, and body mass, for a curated set of 969 species. Additionally, it provides estimates of the ratio between the rate of non-synonymous \gls{substitution}s over synonymous \gls{substitution}s (${dN}/{dS}$) for 1,324 species.
+
+For individual species, intron-centered alternative splicing frequencies, gene expression levels, and sequencing depth statistics have been systematically quantified and shared, encompassing more than 15,935 RNA-seq samples across 491 species. To enable cross-species comparisons, orthology predictions for conserved single-copy genes are provided, based on \acrshort{BUSCO} gene sets, encompassing a total of 1,506 eukaryotic species, including 1,413 animals and 93 green plants, along with phylogenetic trees to account for phylogenetic inertia.
+
+The number of species per data type varies due to different limitations: availability of life history traits data; completeness of gene annotations for ${dN}/{dS}$ calculation; computational resources and availability of RNA-seq samples for transcriptomic analysis (\hyperref[fig:gtdrift4]{Fig. 4}).
+
+These pre-processed data streamlines the work for those interested in investigating the impact of drift on biological processes across a wide range of species. All data are provided in flat files, which enable downstream computational analyses and render GTDrift mainly aimed at users with some computational skills. Nonetheless, to enhance accessibility, we have developed a user-friendly Shiny app that facilitates database exploration and allows for species-specific data downloads (available at \url{https://lbbe-shiny.univ-lyon1.fr/ShinyApp-GTDrift/}).
+
+\subsection{Cautionary considerations in utilizing \Ne~proxies}
+
+Users should bear in mind that the scientific community has yet to establish the most adequate proxies for effective population size. A prominent hypothesis suggests that these proxies are associated with the number of individuals (\acrshort{N}). Indeed, species with greater longevity and larger body mass tend to be less abundant within their ecological niche due to resource (mass) and spatial (length, mass) requirements~\citep{damuth_population_1981, nee_relationship_1991, white_relationships_2007}. Therefore, variations in life history traits should correspond to variations in the number of individuals (\acrshort{N}), which subsequently impact \acrshort{Ne}.
+
+When using the ${dN}/{dS}$ ratio as a proxy for \acrshort{Ne}, rather than focusing on correlations with the population census, we evaluated the efficiency of natural selection to purge deleterious mutations. This efficiency can be represented as the product of \acrshort{Ne}~and `\acrshort{s}', which denotes the selection coefficient. The extent to which a well-estimated ${dN}/{dS}$ ratio can be considered as a proxy for \acrshort{Ne}~remains a subject of debate. Notably, when the rate of synonymous \gls{substitution}s \gls{dS} exceeds 1, it indicates a point of saturation where multiple \gls{substitution}s occur \textit{per} site, rendering dS susceptible to considerable noise due to the challenge of accurately identifying the number of \gls{substitution}s at given sites. In such cases, the dN component can often still be reliably determined. Given that non-synonymous \gls{substitution}s have a lower rate compared to synonymous ones, \gls{dN} reaches a saturation point at a later stage.
+
+Moreover, when the evolutionary time frame is relatively short, characterized by small \gls{dS} values, the variants under examination are primarily attributed to polymorphism rather than fixed substitutions. In such cases, we are not effectively measuring substitution rates. Consequently, the discussion also revolves around determining a divergence threshold, above which we could assume that \gls{dS} and \gls{dN} predominantly represent substitutions, with minimal influence from polymorphism. In this perspective, the expanding polymorphism data could potentially serve as a means to distinguish between polymorphism and substitutions, offering a more efficient approach to investigate ${dN}/{dS}$~\citep{mugal_why_2014}.
+
+Overall, we found that the various \acrshort{Ne}~proxies were significantly correlated, even when accounting for the underlying phylogenetic structure. Thus, our dataset, which encompasses information on \gls{dN} and \gls{dS} across all branches of the phylogenetic trees, holds the potential to estimate the long-term effective population size (\acrshort{Ne}) and its interaction with life history traits over time.
+
+\subsection{Comparing transcriptomic data}
+In our study, we have identified \acrshort{BUSCO} genes for the eukaryota, metazoa, or embryophyta \acrshort{BUSCO} reference gene sets. To ensure meaningful comparisons between species with a sufficient number of detected \acrshort{BUSCO} genes, we evaluated the median RNA-seq coverage of these \acrshort{BUSCO} genes. As demonstrated in \nameref{sec:TechnicalValidation}, the median \textit{per}-base read exonic RNA-seq coverage of \acrshort{BUSCO} genes is a good indicator of the power to detect alternative splicing patterns. We believe that, for the inclusion of additional species, an examination of the RNA-seq read coverage on \acrshort{BUSCO} genes is needed to ensure that we could identify major-isoform introns and analyze alternative splicing patterns.
+
+Additionally, it is essential to assess the completeness of the genome and of the annotation, which can be estimated based on the number of identified \acrshort{BUSCO} genes. Some species may have a limited number of well-annotated \acrshort{BUSCO} genes, or global gene duplications may result in the presence of two copies of a \acrshort{BUSCO} gene, which no longer qualifies as a single copy gene.
+
+Our RNA-seq description table offers users access to information collected from the Sequence Read Archive (SRA) for the RNA-seq datasets under study. This table enables users to filter and select RNA-seq data that align with their specific research needs. Users can tailor their selection based on factors such as sex, tissue, or protocol. Depending on the research question that is asked, it may be important to extract and analyse RNA-seq samples that were generated for the same biological conditions. We provide this information so that GTDrift users are able to filter the data as needed. 
+
+To facilitate cross-species comparisons, especially in the context of alternative splicing and gene expression, users can make use of \acrshort{BUSCO} gene sets, which should exhibit consistent expression patterns, functionality, and evolutionary constraints across diverse species. However, users should thoroughly validate this assumption and proceed with vigilance.
+
+\subsection{Conclusion}
+In conclusion, we are confident that the GTDrift database can be a valuable resource for studies aiming to investigate the relationship between the intensity of genetic drift, genomic and transcriptomic characteristics.
+
+\subsection*{Acknowledgements}
+We thank Loïc Guille for his contribution to an initial pilot study, Tristan Lefébure for insightful discussions and Laurent Guéguen for his help on ${dN}/{dS}$ analyses. 
+Computational analyses were performed using the computing facilities of the CC LBBE/PRABI and the Core Cluster of the Institut Français de Bioinformatique (IFB) (ANR-11-INBS-0013).
+Silhouette images of taxonomic Families originate from PhyloPic developed and maintained by Mike Keesey available at \url{https://www.phylopic.org/}.
+
+\subsection*{Author contributions statement}
+F.B. conceived the pipeline and conducted the analyses. F.B. and A.N. drafted the manuscript. All authors reviewed the manuscript. 
+
+\subsection*{Funding}
+This work was funded by the French National Research Agency (ANR-20-CE02-0008-01 "NeGA" and ANR-17-CE12-0019-01 "LncEvoSys").
+
+\subsection*{Competing interests}
+The authors declare no conflicts of interest.

@@ -1,0 +1,289 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% OXFORD THESIS TEMPLATE
+
+% Originally by Keith A. Gillow (gillow@maths.ox.ac.uk), 1997
+% Modified by Sam Evans (sam@samuelevansresearch.org), 2007
+% Modified by John McManigle (john@oxfordechoes.com), 2015
+% Modified by Maud Gautier (https://github.com/MaudGautier), 2019
+% Modified by Thibault Latrille (https://github.com/ThibaultLatrille), 2020
+% Modified by Florian Bénitière (https://github.com/FloBeni), 2024
+%
+% This version Copyright (c) 2024 Florian Bénitière
+%
+% Broad permissions are granted to use, modify, and distribute this software
+% as specified in the MIT License included in this distribution's LICENSE file.
+
+%%%%% CHOOSE PAGE LAYOUT
+%\documentclass[a4paper,openright,twoside]{thesis}
+\documentclass[a4paper,oneside,nobind]{thesis}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{orcidlink}
+\usepackage{newfloat}
+\usepackage{chemarrow}
+\usepackage{lipsum}
+\usepackage{titlesec}
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+\usepackage{textcomp}
+\newunicodechar{ }{\,}
+\newunicodechar{′}{\ensuremath{\prime}}
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+
+\definecolor{Nonpolar}{HTML}{fef1d2}
+\definecolor{Polar}{HTML}{a9fdd8}
+\definecolor{Basic}{HTML}{d7f8ff}
+\definecolor{Acidic}{HTML}{feceea}
+\definecolor{Stop}{HTML}{D0D0D0}
+
+\makeatletter
+\def\input@path{}
+\makeatother
+\usepackage{afterpage}
+\newcommand\myemptypage{
+    % \null
+    \begin{alwayssingle}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \addtocounter{page}{-1}
+    \end{alwayssingle}
+    % 
+    % \newpage
+    }
+
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{red}#1}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF LISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_UNDERLINE %DIF PREAMBLE
+  moredelim=[il][\color{red}\sout]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\uwave]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+
+\renewcommand{\baselinestretch}{1.5}
+\newcommand{\beginsupplement}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0}
+        \renewcommand{\figurename}{Supplementary Figure}%
+     }
+
+\newcommand{\oneline}[1]{%
+  \newdimen{\namewidth}%
+  \setlength{\namewidth}{\widthof{#1}}%
+  \ifthenelse{\lengthtest{\namewidth < \textwidth}}%
+  {#1}% do nothing if shorter than text width
+  {\resizebox{\textwidth}{!}{#1}}% scale down
+}
+
+\input{notations}
+% make part like a chapter
+
+%%%%% THE ACTUAL DOCUMENT STARTS HERE
+\begin{document}
+    \pagenumbering{gobble}
+    \hypersetup{pageanchor=false}
+    \input{sections/frontpage}
+
+    % \myemptypage
+    % \begin{alwayssingle}
+    % \vspace*{\fill}
+    % \end{alwayssingle}
+    
+%%%%% CHOOSE YOUR LINE SPACING HERE
+    \setlength{\textbaselineskip}{1em}
+% You can set the spacing here for the roman-numbered pages (acknowledgements, table of contents, etc.)
+    \setlength{\frontmatterbaselineskip}{1em}
+% Leave this line alone; it gets things started for the real document.
+    \setlength{\baselineskip}{\textbaselineskip}
+
+%%%%% CHOOSE YOUR SECTION NUMBERING DEPTH HERE
+% The level that gets a number:
+    \setcounter{secnumdepth}{2}
+% The level that shows up in the ToC:
+    \setcounter{tocdepth}{2}
+
+
+    % \myemptypage
+
+%%%% EPIGRAPH
+    \begin{alwayssingle}
+        \thispagestyle{empty}
+        \vspace*{\fill}
+        \makebox[\textwidth][r] {
+        \begin{minipage}[t]{8cm}
+            \emph{}\\
+        \hfill \slshape{We are no better or more evolved than any other living thing. We are not above nature. We are simply part of it. [...] Some of us have evolved enough to realise we have not evolved enough.}\\
+        \hfill \qauthor{Ricky Gervais (\textcolor{BLUEROYAL}{2014})}
+        \end{minipage}
+        }
+        \vspace*{\fill}
+        \vspace*{\fill}
+    \end{alwayssingle}
+    
+
+    % \myemptypage
+    
+%%%%% ABSTRACT FRENCH
+    \setlength{\baselineskip}{1.5\frontmatterbaselineskip}
+
+%%%%% ACKNOWLEDGEMENTS
+    \begin{alwayssingle}
+    	\input{sections/acknowledgement}
+    \end{alwayssingle}
+
+    % \myemptypage
+    
+    % \myemptypage
+    
+    \begin{alwayssingle}
+        \input{sections/abstract_fr}
+    \end{alwayssingle}
+
+
+% %%%%% ABSTRACT ENGLISH
+    \hypersetup{pageanchor=true}
+    \begin{romanpages}
+
+        \setlength{\baselineskip}{1.5\frontmatterbaselineskip}
+        \begin{alwayssingle}
+            \input{sections/abstract_en}
+        \end{alwayssingle}
+
+    % \myemptypage
+        \setlength{\baselineskip}{\frontmatterbaselineskip}
+%%%%% MINI TABLES
+        \dominitoc % include a mini table of contents
+        \dominilof  % include a mini list of figures
+% \dominilot  % include a mini list of tables
+% This aligns the bottom of the text of each page.  It generally makes things look better.
+        \flushbottom
+% This is where the whole-document ToC appears:
+        {
+        \setlength{\baselineskip}{1.1\frontmatterbaselineskip}
+        \hypersetup{linkcolor=GREYDARK}
+        \tableofcontents
+        
+    % \myemptypage
+        \listoffigures
+        \mtcaddchapter
+        % \listoftables
+        \mtcaddchapter
+        }
+        {
+        \setlength{\baselineskip}{1.1\frontmatterbaselineskip}
+        \input{sections/glossary}
+        }
+    \end{romanpages}
+
+%%%% CHAPTERS
+    % \begin{alwayssingle}
+    % \vspace*{\fill}
+    % \end{alwayssingle}
+
+    \myemptypage
+    
+    
+    \setlength{\baselineskip}{1.5\frontmatterbaselineskip}
+    \pagenumbering{arabic}
+    \flushbottom
+    \input{sections/preamble}
+
+    \pagestyle{fancybook}
+    
+    \part{Introduction}\titlepagedecoration
+    \label{part:intro}
+    
+    \adjustmtc[-1]
+    \input{sections/chap1_intro_metazoan_genome}
+    \input{sections/chap2_intro_evol_forces}
+    \input{sections/chap3_intro_biol_evol}
+    
+    % \myemptypage
+    \input{sections/chap4_intro_objectives}
+
+    
+    % \myemptypage
+    
+    % \myemptypage
+    \part{Studies}\titlepagedecoration
+    \label{part:studies}
+    \input{chap5-GTDrift/main}
+    \input{chap6-Alternative Splicing/main}
+    \input{chap7-Translational Selection/main}
+    
+% Conclusion
+    
+    % \myemptypage
+    
+    % \myemptypage
+    \part[Discussion \& Perspectives]{Discussion\\ \vspace{10pt} \&\\ \vspace{10pt} Perspectives}\titlepagedecoration
+    \label{chap:conclusion}
+    \input{sections/chap8-conclusion}
+    
+% Appendices
+
+    
+    % \myemptypage
+    % \myemptypage
+    \cleardoublepage\phantomsection
+    \startappendices
+    \part*{Appendices}\titlepagedecoration
+    \thispagestyle{empty}
+    \addcontentsline{toc}{part}{Appendices}
+
+    % \adjustmtc[-1]
+    \input{chap6-Alternative Splicing/supp}
+    \adjustmtc[0]
+    \input{chap7-Translational Selection/supp}
+    
+    % \myemptypage
+    
+    \input{sections/appendix_C}
+    
+    
+%%%%% REFERENCES
+    
+    
+    \myemptypage
+    
+    \bibliographystyle{natbib}
+    \bibliography{references}
+\end{document}
+
